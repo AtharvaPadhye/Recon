@@ -114,6 +114,14 @@ curl http://localhost:8000/entities/Case/{CASE_ID}
 
 These endpoints provide a basic demonstration and can be expanded with persistent storage, authentication, additional sensors or a frontend for visualization. Each collection supports standard CRUD operations (create, read, update and delete) for events, cases and tasks.
 
+## Running Tests
+
+`pytest` is used for automated tests located in the `tests/` directory. After installing the dependencies, simply run:
+
+```bash
+pytest
+```
+
 ## Frontend
 
 A simple HTML/JavaScript interface is provided in `frontend/` for interacting with the
