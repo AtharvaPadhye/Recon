@@ -33,7 +33,17 @@ uvicorn backend.app.main:app --reload
 The application stores data in a local `db.json` file using TinyDB. The file is
 created automatically on first run and can be deleted to reset the database.
 
+### Docker
+
+Build the image and run the API without installing Python locally:
+
+```bash
+docker build -t recon-api .
+docker run --rm -p 8000:8000 recon-api
+```
 The API will be available at `http://localhost:8000` and includes automatic Swagger UI documentation at `http://localhost:8000/docs`.
+
+Cross-origin requests from `http://localhost:8000` and pages served via `file://` are allowed so the included frontend can communicate with the API.
 
 ## Example Endpoints
 
@@ -46,7 +56,7 @@ curl -X POST http://localhost:8000/v1/events \
   -d '{
     "source_type": "osint",
     "source_id": "telegram_watchdog",
-    "timestamp": "2025-07-25T10:00:00Z",
+    "timestamp": "2025-07-25T10:00:00Z",  # ISO 8601 datetime
     "location": { "lat": 34.05, "lon": -118.25 },
     "summary": "Unusual troop movement near highway"
   }'
@@ -62,6 +72,7 @@ curl -X POST http://localhost:8000/v1/cases \
     "initial_event_id": "YOUR_EVENT_ID_HERE"
   }'
 ```
+# created_date and updated_date are automatically set by the server
 
 ### 3. Task a recon asset
 ```bash
@@ -74,6 +85,9 @@ curl -X POST http://localhost:8000/v1/task_recon \
     "preferred_assets": ["uav"]
   }'
 ```
+
+Allowed sensor types are `optical`, `infrared`, and `radar`. Urgency levels can
+be `low`, `medium`, or `high`.
 
 ### 4. View all active cases
 ```bash
@@ -90,13 +104,25 @@ curl http://localhost:8000/v1/events
 curl http://localhost:8000/v1/task_recon
 ```
 
-### 7. Access case entities
+### 7. List tasks for a case
+```bash
+curl http://localhost:8000/v1/task_recon/case/{CASE_ID}
+```
+### 8. Access case entities
 ```bash
 curl http://localhost:8000/entities/Case
 curl http://localhost:8000/entities/Case/{CASE_ID}
 ```
 
 These endpoints provide a basic demonstration and can be expanded with persistent storage, authentication, additional sensors or a frontend for visualization. Each collection supports standard CRUD operations (create, read, update and delete) for events, cases and tasks.
+
+## Running Tests
+
+`pytest` is used for automated tests located in the `tests/` directory. After installing the dependencies, simply run:
+
+```bash
+pytest
+```
 
 ## Frontend
 
