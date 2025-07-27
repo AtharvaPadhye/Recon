@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException
 from datetime import datetime, timezone
 from ..models import Case
 from .events import get_event
-from .. import database
+from .. import memory_db as database
 
 router = APIRouter(prefix="/v1/cases", tags=["cases"])
 
