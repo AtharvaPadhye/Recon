@@ -1,12 +1,13 @@
 from fastapi import APIRouter, HTTPException
-from .cases import cases_db, get_case
+from .cases import get_case
 from ..models import Case
+from .. import database
 
 router = APIRouter(prefix="/entities", tags=["entities"])
 
 @router.get("/Case", response_model=list[Case])
 def list_case_entities():
-    return cases_db
+    return database.list_cases()
 
 @router.get("/Case/{case_id}", response_model=Case)
 def read_case_entity(case_id: str):
