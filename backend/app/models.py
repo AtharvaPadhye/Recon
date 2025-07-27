@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field
 from typing import List, Optional
 from uuid import uuid4
+from enum import Enum
 
 class Location(BaseModel):
     lat: float
@@ -28,15 +29,27 @@ class Case(BaseModel):
     created_by: Optional[str] = None
     is_sample: bool = False
 
+
+class Urgency(str, Enum):
+    low = "low"
+    medium = "medium"
+    high = "high"
+
+
+class SensorType(str, Enum):
+    optical = "optical"
+    infrared = "infrared"
+    radar = "radar"
+
 class TaskRequest(BaseModel):
     case_id: str
-    sensor_types: List[str]
-    urgency: str
+    sensor_types: List[SensorType]
+    urgency: Urgency
     preferred_assets: List[str] = []
 
 class Task(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid4()))
     case_id: str
-    sensor_types: List[str]
-    urgency: str
+    sensor_types: List[SensorType]
+    urgency: Urgency
     preferred_assets: List[str] = []

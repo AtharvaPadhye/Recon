@@ -72,6 +72,9 @@ curl -X POST http://localhost:8000/v1/task_recon \
   }'
 ```
 
+Allowed sensor types are `optical`, `infrared`, and `radar`. Urgency levels can
+be `low`, `medium`, or `high`.
+
 ### 4. View all active cases
 ```bash
 curl http://localhost:8000/v1/cases
