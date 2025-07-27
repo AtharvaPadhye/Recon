@@ -77,4 +77,14 @@ curl -X POST http://localhost:8000/v1/task_recon \
 curl http://localhost:8000/v1/cases
 ```
 
-These endpoints provide a basic demonstration and can be expanded with persistent storage, authentication, additional sensors or a frontend for visualization.
+### 5. List all events
+```bash
+curl http://localhost:8000/v1/events
+```
+
+### 6. List all recon tasks
+```bash
+curl http://localhost:8000/v1/task_recon
+```
+
+These endpoints provide a basic demonstration and can be expanded with persistent storage, authentication, additional sensors or a frontend for visualization. Each collection supports standard CRUD operations (create, read, update and delete) for events, cases and tasks.
