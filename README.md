@@ -42,8 +42,7 @@ docker build -t recon-api .
 docker run --rm -p 8000:8000 recon-api
 ```
 The API will be available at `http://localhost:8000` and includes automatic Swagger UI documentation at `http://localhost:8000/docs`.
-
-Cross-origin requests from `http://localhost:8000` and pages served via `file://` are allowed so the included frontend can communicate with the API.
+Open `http://localhost:8000/` in your browser to use the simple frontend served by FastAPI. Since the frontend is hosted from the same origin, extra CORS configuration is typically unnecessary.
 
 ## Example Endpoints
 
@@ -130,7 +129,7 @@ A simple HTML/JavaScript interface is provided in `frontend/` for interacting wi
 Cases API.
 
 1. Start the backend API as described above.
-2. Open `frontend/index.html` in your web browser.
+2. Navigate to `http://localhost:8000/` in your web browser.
 
 From the page you can create, edit and delete cases. The frontend expects the
 backend to be available at `http://localhost:8000`.
