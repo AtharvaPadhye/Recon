@@ -11,10 +11,18 @@ _event_q = Query()
 _case_q = Query()
 _task_q = Query()
 
+# Utility helpers
+
+def clear_db() -> None:
+    """Remove all records from every table."""
+    _events.truncate()
+    _cases.truncate()
+    _tasks.truncate()
+
 # Event operations
 
 def add_event(event: Event) -> Event:
-    _events.insert(event.dict())
+    _events.insert(event.model_dump(mode="json"))
     return event
 
 
@@ -30,7 +38,7 @@ def get_event(event_id: str) -> Optional[Event]:
 def update_event(event_id: str, event: Event) -> Optional[Event]:
     if not _events.contains(_event_q.id == event_id):
         return None
-    _events.update(event.dict(), _event_q.id == event_id)
+    _events.update(event.model_dump(mode="json"), _event_q.id == event_id)
     return event
 
 
@@ -41,7 +49,7 @@ def delete_event(event_id: str) -> bool:
 # Case operations
 
 def add_case(case: Case) -> Case:
-    _cases.insert(case.dict())
+    _cases.insert(case.model_dump(mode="json"))
     return case
 
 
@@ -57,7 +65,7 @@ def get_case(case_id: str) -> Optional[Case]:
 def update_case(case_id: str, case: Case) -> Optional[Case]:
     if not _cases.contains(_case_q.id == case_id):
         return None
-    _cases.update(case.dict(), _case_q.id == case_id)
+    _cases.update(case.model_dump(mode="json"), _case_q.id == case_id)
     return case
 
 
@@ -68,7 +76,7 @@ def delete_case(case_id: str) -> bool:
 # Task operations
 
 def add_task(task: Task) -> Task:
-    _tasks.insert(task.dict())
+    _tasks.insert(task.model_dump(mode="json"))
     return task
 
 
@@ -84,7 +92,7 @@ def get_task(task_id: str) -> Optional[Task]:
 def update_task(task_id: str, task: Task) -> Optional[Task]:
     if not _tasks.contains(_task_q.id == task_id):
         return None
-    _tasks.update(task.dict(), _task_q.id == task_id)
+    _tasks.update(task.model_dump(mode="json"), _task_q.id == task_id)
     return task
 
 

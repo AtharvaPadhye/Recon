@@ -1,19 +1,15 @@
 import pytest
 from fastapi.testclient import TestClient
 from backend.app.main import app
-from backend.app.routers import tasks as tasks_router, cases as cases_router, events as events_router
+from backend.app import database
 
 client = TestClient(app)
 
 @pytest.fixture(autouse=True)
 def clear_db():
-    tasks_router.tasks_db.clear()
-    cases_router.cases_db.clear()
-    events_router.events_db.clear()
+    database.clear_db()
     yield
-    tasks_router.tasks_db.clear()
-    cases_router.cases_db.clear()
-    events_router.events_db.clear()
+    database.clear_db()
 
 def create_event():
     payload = {
