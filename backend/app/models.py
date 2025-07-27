@@ -46,11 +46,11 @@ class TaskRequest(BaseModel):
     case_id: str
     sensor_types: List[SensorType]
     urgency: Urgency
-    preferred_assets: List[str] = []
+    preferred_assets: List[str] = Field(default_factory=list)
 
 class Task(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid4()))
     case_id: str
     sensor_types: List[SensorType]
     urgency: Urgency
-    preferred_assets: List[str] = []
+    preferred_assets: List[str] = Field(default_factory=list)
