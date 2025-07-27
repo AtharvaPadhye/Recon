@@ -1,3 +1,3 @@
-from . import events, cases, tasks
+from . import events, cases, tasks, entities
 
-__all__ = ["events", "cases", "tasks"]
+__all__ = ["events", "cases", "tasks", "entities"]
