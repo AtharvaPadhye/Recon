@@ -18,8 +18,15 @@ class Event(BaseModel):
 class Case(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid4()))
     title: str
+    status: str = "New"
     location: Location
+    summary: Optional[str] = None
     initial_event_id: str
+    created_date: Optional[str] = None
+    updated_date: Optional[str] = None
+    created_by_id: Optional[str] = None
+    created_by: Optional[str] = None
+    is_sample: bool = False
 
 class TaskRequest(BaseModel):
     case_id: str
