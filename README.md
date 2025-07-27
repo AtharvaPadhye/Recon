@@ -87,4 +87,10 @@ curl http://localhost:8000/v1/events
 curl http://localhost:8000/v1/task_recon
 ```
 
+### 7. Access case entities
+```bash
+curl http://localhost:8000/entities/Case
+curl http://localhost:8000/entities/Case/{CASE_ID}
+```
+
 These endpoints provide a basic demonstration and can be expanded with persistent storage, authentication, additional sensors or a frontend for visualization. Each collection supports standard CRUD operations (create, read, update and delete) for events, cases and tasks.
