@@ -32,6 +32,8 @@ uvicorn backend.app.main:app --reload
 
 The API will be available at `http://localhost:8000` and includes automatic Swagger UI documentation at `http://localhost:8000/docs`.
 
+Cross-origin requests from `http://localhost:8000` and pages served via `file://` are allowed so the included frontend can communicate with the API.
+
 ## Example Endpoints
 
 You can test the API using `curl`, Postman or any HTTP client.
