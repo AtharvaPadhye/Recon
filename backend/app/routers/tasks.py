@@ -1,10 +1,10 @@
 from fastapi import APIRouter, HTTPException
 from ..models import Task, TaskRequest
 from .cases import get_case
+from .. import database
 
 router = APIRouter(prefix="/v1/task_recon", tags=["tasks"])
 
-tasks_db = []
 
 @router.post("", response_model=Task)
 def create_task(task_req: TaskRequest):
@@ -16,18 +16,14 @@ def create_task(task_req: TaskRequest):
         urgency=task_req.urgency,
         preferred_assets=task_req.preferred_assets,
     )
-    tasks_db.append(task)
-    return task
+    return database.add_task(task)
 
 @router.get("", response_model=list[Task])
 def list_tasks():
-    return tasks_db
+    return database.list_tasks()
 
 def get_task(task_id: str) -> Task:
-    for t in tasks_db:
-        if t.id == task_id:
-            return t
-    return None
+    return database.get_task(task_id)
 
 @router.get("/{task_id}", response_model=Task)
 def read_task(task_id: str):
@@ -44,14 +40,13 @@ def update_task(task_id: str, update: Task):
     if not task:
         raise HTTPException(status_code=404, detail="task not found")
     update.id = task_id
-    idx = tasks_db.index(task)
-    tasks_db[idx] = update
-    return update
+    updated = database.update_task(task_id, update)
+    return updated
 
 @router.delete("/{task_id}")
 def delete_task(task_id: str):
     task = get_task(task_id)
     if not task:
         raise HTTPException(status_code=404, detail="task not found")
-    tasks_db.remove(task)
+    database.delete_task(task_id)
     return {"detail": "deleted"}

@@ -1,6 +1,6 @@
 # Recon
 
-A starting framework for a recon data ingestion and tasking API. This repository includes a minimal FastAPI backend with in-memory storage that demonstrates how events, cases, and recon tasking requests can be handled.
+A starting framework for a recon data ingestion and tasking API. This repository includes a minimal FastAPI backend backed by a lightweight TinyDB database stored in `db.json`. It demonstrates how events, cases, and recon tasking requests can be handled.
 
 ## Folder Structure
 
@@ -29,6 +29,9 @@ pip install -r backend/requirements.txt
 ```bash
 uvicorn backend.app.main:app --reload
 ```
+
+The application stores data in a local `db.json` file using TinyDB. The file is
+created automatically on first run and can be deleted to reset the database.
 
 The API will be available at `http://localhost:8000` and includes automatic Swagger UI documentation at `http://localhost:8000/docs`.
 
