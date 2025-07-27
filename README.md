@@ -102,7 +102,11 @@ curl http://localhost:8000/v1/events
 curl http://localhost:8000/v1/task_recon
 ```
 
-### 7. Access case entities
+### 7. List tasks for a case
+```bash
+curl http://localhost:8000/v1/task_recon/case/{CASE_ID}
+```
+### 8. Access case entities
 ```bash
 curl http://localhost:8000/entities/Case
 curl http://localhost:8000/entities/Case/{CASE_ID}
