@@ -23,6 +23,14 @@ def create_task(task_req: TaskRequest):
 def list_tasks():
     return tasks_db
 
+
+@router.get("/case/{case_id}", response_model=list[Task])
+def list_tasks_for_case(case_id: str):
+    """Return tasks associated with a particular case."""
+    if not get_case(case_id):
+        raise HTTPException(status_code=404, detail="case not found")
+    return [t for t in tasks_db if t.case_id == case_id]
+
 def get_task(task_id: str) -> Task:
     for t in tasks_db:
         if t.id == task_id:
