@@ -4,7 +4,8 @@ from .cases import get_case
 
 router = APIRouter(prefix="/v1/task_recon", tags=["tasks"])
 
-tasks_db = []
+# Store tasks in-memory keyed by task ID
+tasks_db: dict[str, Task] = {}
 
 @router.post("", response_model=Task)
 def create_task(task_req: TaskRequest):
@@ -16,18 +17,15 @@ def create_task(task_req: TaskRequest):
         urgency=task_req.urgency,
         preferred_assets=task_req.preferred_assets,
     )
-    tasks_db.append(task)
+    tasks_db[task.id] = task
     return task
 
 @router.get("", response_model=list[Task])
 def list_tasks():
-    return tasks_db
+    return list(tasks_db.values())
 
-def get_task(task_id: str) -> Task:
-    for t in tasks_db:
-        if t.id == task_id:
-            return t
-    return None
+def get_task(task_id: str) -> Task | None:
+    return tasks_db.get(task_id)
 
 @router.get("/{task_id}", response_model=Task)
 def read_task(task_id: str):
@@ -40,18 +38,15 @@ def read_task(task_id: str):
 def update_task(task_id: str, update: Task):
     if not get_case(update.case_id):
         raise HTTPException(status_code=404, detail="case_id not found")
-    task = get_task(task_id)
-    if not task:
+    if task_id not in tasks_db:
         raise HTTPException(status_code=404, detail="task not found")
     update.id = task_id
-    idx = tasks_db.index(task)
-    tasks_db[idx] = update
+    tasks_db[task_id] = update
     return update
 
 @router.delete("/{task_id}")
 def delete_task(task_id: str):
-    task = get_task(task_id)
+    task = tasks_db.pop(task_id, None)
     if not task:
         raise HTTPException(status_code=404, detail="task not found")
-    tasks_db.remove(task)
     return {"detail": "deleted"}

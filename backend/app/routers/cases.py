@@ -5,7 +5,8 @@ from .events import get_event
 
 router = APIRouter(prefix="/v1/cases", tags=["cases"])
 
-cases_db = []
+# In-memory case storage keyed by case ID
+cases_db: dict[str, Case] = {}
 
 @router.post("", response_model=Case)
 def create_case(case: Case):
@@ -14,12 +15,12 @@ def create_case(case: Case):
     now = datetime.utcnow().isoformat() + "Z"
     case.created_date = now
     case.updated_date = now
-    cases_db.append(case)
+    cases_db[case.id] = case
     return case
 
 @router.get("", response_model=list[Case])
 def list_cases():
-    return cases_db
+    return list(cases_db.values())
 
 @router.get("/{case_id}", response_model=Case)
 def read_case(case_id: str):
@@ -38,20 +39,15 @@ def update_case(case_id: str, case_update: Case):
     case_update.id = case_id
     case_update.created_date = case.created_date
     case_update.updated_date = datetime.utcnow().isoformat() + "Z"
-    idx = cases_db.index(case)
-    cases_db[idx] = case_update
+    cases_db[case_id] = case_update
     return case_update
 
 @router.delete("/{case_id}")
 def delete_case(case_id: str):
-    case = get_case(case_id)
+    case = cases_db.pop(case_id, None)
     if not case:
         raise HTTPException(status_code=404, detail="case not found")
-    cases_db.remove(case)
     return {"detail": "deleted"}
 
-def get_case(case_id: str) -> Case:
-    for c in cases_db:
-        if c.id == case_id:
-            return c
-    return None
+def get_case(case_id: str) -> Case | None:
+    return cases_db.get(case_id)
