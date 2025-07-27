@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from ..models import Event
-from .. import database
+from .. import memory_db as database
 
 router = APIRouter(prefix="/v1/events", tags=["events"])
 

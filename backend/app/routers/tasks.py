@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from ..models import Task, TaskRequest
 from .cases import get_case
-from .. import database
+from .. import memory_db as database
 
 router = APIRouter(prefix="/v1/task_recon", tags=["tasks"])
 

@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from .cases import get_case
 from ..models import Case
-from .. import database
+from .. import memory_db as database
 
 router = APIRouter(prefix="/entities", tags=["entities"])
 
