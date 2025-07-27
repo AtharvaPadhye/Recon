@@ -1,7 +1,7 @@
 import pytest
 from fastapi.testclient import TestClient
 from backend.app.main import app
-from backend.app import memory_db as database
+from backend.app import database
 
 client = TestClient(app)
 

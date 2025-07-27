@@ -1,7 +1,7 @@
 import pytest
 from fastapi.testclient import TestClient
 from backend.app.main import app
-from backend.app import memory_db as database
+from backend.app import database
 
 client = TestClient(app)
 
@@ -72,3 +72,15 @@ def test_task_crud():
 
     resp = client.get(f"/v1/task_recon/{task_id}")
     assert resp.status_code == 404
+
+def test_list_tasks_for_case():
+    event_id = create_event()
+    case_id = create_case(event_id)
+    payload = create_task_payload(case_id)
+    # create task
+    task_id = client.post("/v1/task_recon", json=payload).json()["id"]
+
+    resp = client.get(f"/v1/task_recon/case/{case_id}")
+    assert resp.status_code == 200
+    ids = [t["id"] for t in resp.json()]
+    assert task_id in ids

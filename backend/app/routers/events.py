@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from ..models import Event
-from .. import memory_db as database
+# Use TinyDB-backed database for persistence
+from .. import database
 
 router = APIRouter(prefix="/v1/events", tags=["events"])
 
