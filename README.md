@@ -101,7 +101,7 @@ A simple HTML/JavaScript interface is provided in `frontend/` for interacting wi
 Cases API.
 
 1. Start the backend API as described above.
-2. Open `frontend/index.html` in your web browser.
+2. Visit `http://localhost:8000` in your browser.
 
 From the page you can create, edit and delete cases. The frontend expects the
 backend to be available at `http://localhost:8000`.
