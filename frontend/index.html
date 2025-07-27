@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cases</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        button {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cases</h1>
+
+    <section id="create-case">
+        <h2>Create Case</h2>
+        <form id="case-form">
+            <label>Title: <input type="text" id="title" required></label><br>
+            <label>Latitude: <input type="number" id="lat" step="any" required></label><br>
+            <label>Longitude: <input type="number" id="lon" step="any" required></label><br>
+            <label>Initial Event ID: <input type="text" id="initial_event_id" required></label><br>
+            <button type="submit">Create</button>
+        </form>
+    </section>
+
+    <section id="cases-list">
+        <h2>Existing Cases</h2>
+        <table id="cases-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Lat</th>
+                    <th>Lon</th>
+                    <th>Initial Event</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </section>
+
+    <script src="app.js"></script>
+</body>
+</html>
