@@ -18,3 +18,40 @@ def create_task(task_req: TaskRequest):
     )
     tasks_db.append(task)
     return task
+
+@router.get("", response_model=list[Task])
+def list_tasks():
+    return tasks_db
+
+def get_task(task_id: str) -> Task:
+    for t in tasks_db:
+        if t.id == task_id:
+            return t
+    return None
+
+@router.get("/{task_id}", response_model=Task)
+def read_task(task_id: str):
+    task = get_task(task_id)
+    if not task:
+        raise HTTPException(status_code=404, detail="task not found")
+    return task
+
+@router.put("/{task_id}", response_model=Task)
+def update_task(task_id: str, update: Task):
+    if not get_case(update.case_id):
+        raise HTTPException(status_code=404, detail="case_id not found")
+    task = get_task(task_id)
+    if not task:
+        raise HTTPException(status_code=404, detail="task not found")
+    update.id = task_id
+    idx = tasks_db.index(task)
+    tasks_db[idx] = update
+    return update
+
+@router.delete("/{task_id}")
+def delete_task(task_id: str):
+    task = get_task(task_id)
+    if not task:
+        raise HTTPException(status_code=404, detail="task not found")
+    tasks_db.remove(task)
+    return {"detail": "deleted"}

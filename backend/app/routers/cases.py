@@ -17,6 +17,33 @@ def create_case(case: Case):
 def list_cases():
     return cases_db
 
+@router.get("/{case_id}", response_model=Case)
+def read_case(case_id: str):
+    case = get_case(case_id)
+    if not case:
+        raise HTTPException(status_code=404, detail="case not found")
+    return case
+
+@router.put("/{case_id}", response_model=Case)
+def update_case(case_id: str, case_update: Case):
+    if not get_event(case_update.initial_event_id):
+        raise HTTPException(status_code=404, detail="initial_event_id not found")
+    case = get_case(case_id)
+    if not case:
+        raise HTTPException(status_code=404, detail="case not found")
+    case_update.id = case_id
+    idx = cases_db.index(case)
+    cases_db[idx] = case_update
+    return case_update
+
+@router.delete("/{case_id}")
+def delete_case(case_id: str):
+    case = get_case(case_id)
+    if not case:
+        raise HTTPException(status_code=404, detail="case not found")
+    cases_db.remove(case)
+    return {"detail": "deleted"}
+
 def get_case(case_id: str) -> Case:
     for c in cases_db:
         if c.id == case_id:
