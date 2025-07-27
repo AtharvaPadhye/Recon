@@ -1,7 +1,8 @@
 from fastapi import APIRouter, HTTPException
 from ..models import Task, TaskRequest
 from .cases import get_case
-from .. import memory_db as database
+# Use TinyDB-backed database for persistence
+from .. import database
 
 router = APIRouter(prefix="/v1/task_recon", tags=["tasks"])
 

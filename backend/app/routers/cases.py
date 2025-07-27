@@ -2,7 +2,8 @@ from fastapi import APIRouter, HTTPException
 from datetime import datetime, timezone
 from ..models import Case
 from .events import get_event
-from .. import memory_db as database
+# Use TinyDB-backed database for persistence
+from .. import database
 
 router = APIRouter(prefix="/v1/cases", tags=["cases"])
 

@@ -1,7 +1,8 @@
 from fastapi import APIRouter, HTTPException
 from .cases import get_case
 from ..models import Case
-from .. import memory_db as database
+# Use TinyDB-backed database for persistence
+from .. import database
 
 router = APIRouter(prefix="/entities", tags=["entities"])
 
