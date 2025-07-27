@@ -28,7 +28,7 @@ def list_tasks_for_case(case_id: str):
     """Return tasks associated with a particular case."""
     if not get_case(case_id):
         raise HTTPException(status_code=404, detail="case not found")
-    return [t for t in tasks_db if t.case_id == case_id]
+    return [t for t in database.list_tasks() if t.case_id == case_id]
 
 def get_task(task_id: str) -> Task:
     return database.get_task(task_id)

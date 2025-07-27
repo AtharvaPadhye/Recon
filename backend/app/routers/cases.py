@@ -38,9 +38,8 @@ def update_case(case_id: str, case_update: Case):
     case_update.created_date = case.created_date
 
     case_update.updated_date = datetime.now(timezone.utc)
-    idx = cases_db.index(case)
-    cases_db[idx] = case_update
-    return case_update
+    updated = database.update_case(case_id, case_update)
+    return updated
 
 
 @router.delete("/{case_id}")
