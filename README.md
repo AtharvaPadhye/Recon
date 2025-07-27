@@ -88,3 +88,14 @@ curl http://localhost:8000/v1/task_recon
 ```
 
 These endpoints provide a basic demonstration and can be expanded with persistent storage, authentication, additional sensors or a frontend for visualization. Each collection supports standard CRUD operations (create, read, update and delete) for events, cases and tasks.
+
+## Frontend
+
+A simple HTML/JavaScript interface is provided in `frontend/` for interacting with the
+Cases API.
+
+1. Start the backend API as described above.
+2. Open `frontend/index.html` in your web browser.
+
+From the page you can create, edit and delete cases. The frontend expects the
+backend to be available at `http://localhost:8000`.
