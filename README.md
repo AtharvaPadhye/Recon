@@ -43,7 +43,7 @@ curl -X POST http://localhost:8000/v1/events \
   -d '{
     "source_type": "osint",
     "source_id": "telegram_watchdog",
-    "timestamp": "2025-07-25T10:00:00Z",
+    "timestamp": "2025-07-25T10:00:00Z",  # ISO 8601 datetime
     "location": { "lat": 34.05, "lon": -118.25 },
     "summary": "Unusual troop movement near highway"
   }'
@@ -59,6 +59,7 @@ curl -X POST http://localhost:8000/v1/cases \
     "initial_event_id": "YOUR_EVENT_ID_HERE"
   }'
 ```
+# created_date and updated_date are automatically set by the server
 
 ### 3. Task a recon asset
 ```bash

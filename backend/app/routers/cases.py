@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from datetime import datetime
+from datetime import datetime, timezone
 from ..models import Case
 from .events import get_event
 
@@ -11,7 +11,7 @@ cases_db = []
 def create_case(case: Case):
     if not get_event(case.initial_event_id):
         raise HTTPException(status_code=404, detail="initial_event_id not found")
-    now = datetime.utcnow().isoformat() + "Z"
+    now = datetime.now(timezone.utc)
     case.created_date = now
     case.updated_date = now
     cases_db.append(case)
@@ -37,7 +37,7 @@ def update_case(case_id: str, case_update: Case):
         raise HTTPException(status_code=404, detail="case not found")
     case_update.id = case_id
     case_update.created_date = case.created_date
-    case_update.updated_date = datetime.utcnow().isoformat() + "Z"
+    case_update.updated_date = datetime.now(timezone.utc)
     idx = cases_db.index(case)
     cases_db[idx] = case_update
     return case_update
