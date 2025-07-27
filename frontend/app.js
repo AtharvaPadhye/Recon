@@ -8,7 +8,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function loadCases() {
     fetch(`${API_BASE}/cases`)
-        .then(res => res.json())
+        .then(res => {
+            if (!res.ok) {
+                return res.json().then(err => {
+                    throw new Error(err.detail || 'Failed to load cases');
+                });
+            }
+            return res.json();
+        })
         .then(data => {
             const tbody = document.querySelector('#cases-table tbody');
             tbody.innerHTML = '';
@@ -27,7 +34,8 @@ function loadCases() {
                 `;
                 tbody.appendChild(tr);
             });
-        });
+        })
+        .catch(err => alert(err));
 }
 
 function submitCase(e) {
@@ -77,6 +85,13 @@ function startEdit(id) {
 
 function deleteCase(id) {
     fetch(`${API_BASE}/cases/${id}`, { method: 'DELETE' })
+        .then(res => {
+            if (!res.ok) {
+                return res.json().then(err => {
+                    throw new Error(err.detail || 'Failed to delete case');
+                });
+            }
+        })
         .then(() => loadCases())
-        .catch(err => console.error(err));
+        .catch(err => alert(err));
 }
