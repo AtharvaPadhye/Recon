@@ -5,11 +5,13 @@ from backend.app import database
 
 client = TestClient(app)
 
+
 @pytest.fixture(autouse=True)
 def clear_db():
     database.clear_db()
     yield
     database.clear_db()
+
 
 def create_event():
     payload = {

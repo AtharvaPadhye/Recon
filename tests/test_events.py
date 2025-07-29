@@ -5,11 +5,13 @@ from backend.app import database
 
 client = TestClient(app)
 
+
 @pytest.fixture(autouse=True)
 def clear_db():
     database.clear_db()
     yield
     database.clear_db()
+
 
 def create_event_payload():
     return {
@@ -17,8 +19,9 @@ def create_event_payload():
         "source_id": "test_src",
         "timestamp": "2025-01-01T00:00:00Z",
         "location": {"lat": 1.0, "lon": 2.0},
-        "summary": "test"
+        "summary": "test",
     }
+
 
 def test_event_crud():
     payload = create_event_payload()

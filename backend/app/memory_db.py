@@ -1,20 +1,25 @@
 from typing import List, Optional
-from .models import Event, Case, Task
+from .models import Event, Case, Task, Asset
 
 # In-memory storage using dictionaries
 _events: dict[str, Event] = {}
 _cases: dict[str, Case] = {}
 _tasks: dict[str, Task] = {}
+_assets: dict[str, Asset] = {}
 
 # Utility helpers
+
 
 def clear_db() -> None:
     """Remove all records from every table."""
     _events.clear()
     _cases.clear()
     _tasks.clear()
+    _assets.clear()
+
 
 # Event operations
+
 
 def add_event(event: Event) -> Event:
     _events[event.id] = event
@@ -39,7 +44,9 @@ def update_event(event_id: str, event: Event) -> Optional[Event]:
 def delete_event(event_id: str) -> bool:
     return _events.pop(event_id, None) is not None
 
+
 # Case operations
+
 
 def add_case(case: Case) -> Case:
     _cases[case.id] = case
@@ -64,7 +71,9 @@ def update_case(case_id: str, case: Case) -> Optional[Case]:
 def delete_case(case_id: str) -> bool:
     return _cases.pop(case_id, None) is not None
 
+
 # Task operations
+
 
 def add_task(task: Task) -> Task:
     _tasks[task.id] = task
@@ -88,3 +97,30 @@ def update_task(task_id: str, task: Task) -> Optional[Task]:
 
 def delete_task(task_id: str) -> bool:
     return _tasks.pop(task_id, None) is not None
+
+
+# Asset operations
+
+
+def add_asset(asset: Asset) -> Asset:
+    _assets[asset.id] = asset
+    return asset
+
+
+def list_assets() -> List[Asset]:
+    return list(_assets.values())
+
+
+def get_asset(asset_id: str) -> Optional[Asset]:
+    return _assets.get(asset_id)
+
+
+def update_asset(asset_id: str, asset: Asset) -> Optional[Asset]:
+    if asset_id not in _assets:
+        return None
+    _assets[asset_id] = asset
+    return asset
+
+
+def delete_asset(asset_id: str) -> bool:
+    return _assets.pop(asset_id, None) is not None
