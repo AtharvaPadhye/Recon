@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException
 from datetime import datetime, timezone
 from ..models import Case
 from .events import get_event
+
 # Use TinyDB-backed database for persistence
 from .. import database
 
@@ -17,9 +18,11 @@ def create_case(case: Case):
     case.updated_date = now
     return database.add_case(case)
 
+
 @router.get("", response_model=list[Case])
 def list_cases():
     return database.list_cases()
+
 
 @router.get("/{case_id}", response_model=Case)
 def read_case(case_id: str):
@@ -27,6 +30,7 @@ def read_case(case_id: str):
     if not case:
         raise HTTPException(status_code=404, detail="case not found")
     return case
+
 
 @router.put("/{case_id}", response_model=Case)
 def update_case(case_id: str, case_update: Case):
@@ -50,6 +54,7 @@ def delete_case(case_id: str):
         raise HTTPException(status_code=404, detail="case not found")
     database.delete_case(case_id)
     return {"detail": "deleted"}
+
 
 def get_case(case_id: str) -> Case:
     return database.get_case(case_id)

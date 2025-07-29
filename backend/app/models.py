@@ -4,9 +4,11 @@ from datetime import datetime
 from uuid import uuid4
 from enum import Enum
 
+
 class Location(BaseModel):
     lat: float
     lon: float
+
 
 class Event(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid4()))
@@ -16,6 +18,7 @@ class Event(BaseModel):
     location: Location
     summary: str
     media_url: Optional[str] = None
+
 
 class Case(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid4()))
@@ -42,11 +45,27 @@ class SensorType(str, Enum):
     infrared = "infrared"
     radar = "radar"
 
+
+class AssetStatus(str, Enum):
+    available = "available"
+    assigned = "assigned"
+    deployed = "deployed"
+
+
+class Asset(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid4()))
+    name: str
+    sensor_type: SensorType
+    location: Optional[Location] = None
+    status: AssetStatus = AssetStatus.available
+
+
 class TaskRequest(BaseModel):
     case_id: str
     sensor_types: List[SensorType]
     urgency: Urgency
     preferred_assets: List[str] = Field(default_factory=list)
+
 
 class Task(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid4()))
@@ -54,3 +73,4 @@ class Task(BaseModel):
     sensor_types: List[SensorType]
     urgency: Urgency
     preferred_assets: List[str] = Field(default_factory=list)
+    assigned_asset_id: Optional[str] = None

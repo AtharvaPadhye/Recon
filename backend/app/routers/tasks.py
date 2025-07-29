@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException
-from ..models import Task, TaskRequest
+from ..models import Task, TaskRequest, AssetStatus
 from .cases import get_case
+
 # Use TinyDB-backed database for persistence
 from .. import database
 
@@ -17,7 +18,18 @@ def create_task(task_req: TaskRequest):
         urgency=task_req.urgency,
         preferred_assets=task_req.preferred_assets,
     )
+    # automatically assign an available asset if possible
+    for asset in database.list_assets():
+        if (
+            asset.sensor_type in task.sensor_types
+            and asset.status == AssetStatus.available
+        ):
+            asset.status = AssetStatus.assigned
+            database.update_asset(asset.id, asset)
+            task.assigned_asset_id = asset.id
+            break
     return database.add_task(task)
+
 
 @router.get("", response_model=list[Task])
 def list_tasks():
@@ -31,8 +43,10 @@ def list_tasks_for_case(case_id: str):
         raise HTTPException(status_code=404, detail="case not found")
     return [t for t in database.list_tasks() if t.case_id == case_id]
 
+
 def get_task(task_id: str) -> Task:
     return database.get_task(task_id)
+
 
 @router.get("/{task_id}", response_model=Task)
 def read_task(task_id: str):
@@ -40,6 +54,7 @@ def read_task(task_id: str):
     if not task:
         raise HTTPException(status_code=404, detail="task not found")
     return task
+
 
 @router.put("/{task_id}", response_model=Task)
 def update_task(task_id: str, update: Task):
@@ -51,6 +66,7 @@ def update_task(task_id: str, update: Task):
     update.id = task_id
     updated = database.update_task(task_id, update)
     return updated
+
 
 @router.delete("/{task_id}")
 def delete_task(task_id: str):

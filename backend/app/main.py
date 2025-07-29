@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from .routers import events, cases, tasks, entities
+from .routers import events, cases, tasks, entities, assets
 
 app = FastAPI(title="Recon API")
 
@@ -18,10 +18,10 @@ app.include_router(events.router)
 app.include_router(cases.router)
 app.include_router(tasks.router)
 app.include_router(entities.router)
+app.include_router(assets.router)
 
 app.mount(
     "/",
     StaticFiles(directory="frontend", html=True),
     name="frontend",
 )
-
